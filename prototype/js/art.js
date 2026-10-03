@@ -7,11 +7,8 @@
   function rng(seed) { let s = seed >>> 0 || 1; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
   const inEllipse = (x, y, cx, cy, rx, ry) => ((x - cx) ** 2) / rx ** 2 + ((y - cy) ** 2) / ry ** 2 <= 1;
 
-  // общие фильтры и градиенты один раз на документ
-  function defs() {
-    if (document.getElementById("art-defs")) return;
-    const d = document.createElement("div");
-    d.innerHTML = `<svg id="art-defs" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  // фильтры и градиенты живут внутри каждой картинки: снимок растеризуется один раз и дальше не перерисовывается
+  const DEFS = `<defs>
       <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch" seed="3"/><feColorMatrix type="saturate" values="0"/></filter>
       <filter id="cloud" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="8"/><feColorMatrix type="matrix" values="0 0 0 0 .78  0 0 0 0 .82  0 0 0 0 .84  0 0 0 1.9 -.75"/></filter>
       <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
@@ -22,9 +19,9 @@
       <linearGradient id="cxrSoft" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b3236"/><stop offset="1" stop-color="#4b5458"/></linearGradient>
       <linearGradient id="cxrMed" x1="0" x2="1"><stop offset="0" stop-color="#6f797d"/><stop offset=".5" stop-color="#a7b0b4"/><stop offset="1" stop-color="#6f797d"/></linearGradient>
       <linearGradient id="bone" x1="0" x2="1"><stop offset="0" stop-color="#8f989c"/><stop offset=".5" stop-color="#dde3e5"/><stop offset="1" stop-color="#8f989c"/></linearGradient>
-    </defs></svg>`;
-    document.body.appendChild(d.firstElementChild);
-  }
+    </defs>`;
+  const cache = new Map();
+  function defs() { /* совместимость: раньше определения вставлялись в документ */ }
 
   function logo(cls = "") {
     return `<svg class="logo ${cls}" viewBox="0 0 32 32" aria-hidden="true">
@@ -52,11 +49,17 @@
     </g>`;
   }
 
-  function frame(inner, label, m) {
-    return `<svg class="study" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${label}">
-      <rect width="${W}" height="${H}" fill="#040607"/>${inner}
-      <rect width="${W}" height="${H}" filter="url(#grain)" opacity=".16" style="mix-blend-mode:screen"/>${mark(m)}</svg>`;
+  function frame(inner, label, m, key) {
+    let url = cache.get(key);
+    if (!url) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${DEFS}<rect width="${W}" height="${H}" fill="#040607"/>${inner}<rect width="${W}" height="${H}" filter="url(#grain)" opacity=".13"/></svg>`;
+      url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.replace(/\s{2,}/g, " "));
+      cache.set(key, url);
+    }
+    return `<img class="study" src="${url}" alt="${label}" decoding="async" draggable="false">` +
+      (m ? `<svg class="marks" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${mark(m)}</svg>` : "");
   }
+  const keyOf = (kind, seed, m) => `${kind}|${seed}|${m ? [m.x, m.y, m.r, m.label].join(",") : "-"}`;
 
   /* КТ ОГК, аксиальный срез: справа пациента = слева на снимке */
   function ct(m, seed = 7) {
@@ -93,7 +96,7 @@
       <ellipse cx="160" cy="36" rx="11" ry="5" fill="#d3d9dc"/>
       <ellipse cx="160" cy="200" rx="19" ry="16" fill="#d8dee1"/><ellipse cx="160" cy="200" rx="12.5" ry="10" fill="#b8c0c4"/>
       <circle cx="160" cy="222" r="5.5" fill="#2a3134"/><path d="M160 228v8" stroke="#cfd6d9" stroke-width="5" stroke-linecap="round"/>
-      ${nod}`, "КТ органов грудной клетки, аксиальный срез", m);
+      ${nod}`, "КТ органов грудной клетки, аксиальный срез", m, keyOf("ct", seed, m));
   }
 
   /* Маммография, косая проекция: грудная стенка слева, сосок справа */
@@ -116,7 +119,7 @@
       </g>
       <path d="${shape}" fill="none" stroke="#c9d0d3" stroke-width="1.2" opacity=".55"/>
       <circle cx="252" cy="168" r="4" fill="#9aa3a7"/>
-      ${calc}${mass}`, "Маммограмма, косая проекция", m);
+      ${calc}${mass}`, "Маммограмма, косая проекция", m, keyOf("mmg", seed, m));
   }
 
   /* Рентгенография ОГК, прямая проекция */
@@ -142,7 +145,7 @@
       <path d="M170 212Q226 192 286 214V240H170Z" fill="#8f989c"/>
       <path d="M56 54Q104 40 148 60" stroke="#c9d0d3" stroke-width="6" fill="none" stroke-linecap="round"/>
       <path d="M264 54Q216 40 172 60" stroke="#c9d0d3" stroke-width="6" fill="none" stroke-linecap="round"/>
-      ${infil}${eff}`, "Рентгенограмма органов грудной клетки", m);
+      ${infil}${eff}`, "Рентгенограмма органов грудной клетки", m, keyOf("cxr", seed, m));
   }
 
   /* Рентгенография коленного сустава */
@@ -154,7 +157,7 @@
       <path d="M98 132C112 126 140 126 160 128C182 126 208 126 222 132L216 168C210 186 204 210 204 240H116C116 210 110 186 104 168Z" fill="url(#bone)"/>
       <path d="M228 150C236 156 238 176 236 240H222C222 190 220 168 216 156Z" fill="#9aa3a7"/>
       <ellipse cx="160" cy="60" rx="22" ry="26" fill="#cfd6d9" opacity=".25"/>
-      <path d="M124 116Q160 124 196 116" stroke="#3a4448" stroke-width="2" fill="none" opacity=".6"/>`, "Рентгенограмма коленного сустава", m);
+      <path d="M124 116Q160 124 196 116" stroke="#3a4448" stroke-width="2" fill="none" opacity=".6"/>`, "Рентгенограмма коленного сустава", m, keyOf("knee", 0, m));
   }
 
   /* Рентгенография околоносовых пазух */
@@ -170,7 +173,7 @@
       <path d="M228 126L178 126L182 172C194 188 216 186 226 172Z" fill="#11171a" stroke="#8d969a" stroke-width="2"/>
       <path d="M160 108V188" stroke="#a9b2b6" stroke-width="5"/>
       <path d="M96 204Q160 230 224 204" stroke="#c3cacd" stroke-width="7" fill="none" opacity=".7"/>
-      ${fluid}`, "Рентгенограмма околоносовых пазух", m);
+      ${fluid}`, "Рентгенограмма околоносовых пазух", m, keyOf("sinus", 0, m));
   }
 
   function study(p, seed) {

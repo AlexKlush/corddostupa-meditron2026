@@ -33,7 +33,7 @@
           <div class="np-status"><span class="t">${esc(p.statusText)}</span>${sla}</div>
           ${acts}
         </div>
-        ${st}
+        ${st}${urgent ? `<span class="halo" aria-hidden="true"></span>` : ""}
       </article></div>`;
   }
 
@@ -229,7 +229,7 @@
         <aside class="cv-queue" data-clip data-lenis-prevent>
           <button class="btn sm ghost back" data-act="nav" data-view="wall">${icon("arrow-left", "s14")}<span>Световой стол</span></button>
           <div class="cvq-list">${queue.map((x, i) => `<button class="cvq plate ${x.lit ? "lit" : "off"} ${x.lit && x.priority === "urgent" ? "urgent" : ""} ${x.id === p.id ? "cur" : ""}" data-act="open-case" data-id="${x.id}" style="--k:${i}">
-            <span class="np-name">${esc(x.short)}</span><span class="cvq-f">${esc(x.study.mod)} · ${esc(x.ai.finding)}</span><span class="cvq-s">${UI.pri(x)}<span class="muted">${U.days(x.since)}</span></span></button>`).join("")}</div>
+            <span class="np-name">${esc(x.short)}</span><span class="cvq-f">${esc(x.study.mod)} · ${esc(x.ai.finding)}</span><span class="cvq-s">${UI.pri(x)}<span class="muted">${U.days(x.since)}</span></span>${x.lit && x.priority === "urgent" ? `<span class="halo" aria-hidden="true"></span>` : ""}</button>`).join("")}</div>
         </aside>
 
         <section class="cv-main">
@@ -397,7 +397,7 @@
       html: `
       <section class="plate pad pipe" data-reveal>
         <div class="pipe-head"><h2>Как заключение становится маршрутом</h2><span class="live"><i></i>поток идёт</span><button class="btn sm" data-act="feed-pause">${icon("pause", "s14")}<span>Пауза</span></button></div>
-        <div class="pipe-svg">${nodes.map((n, i) => `<div class="pnode" style="--k:${i}"><span class="pn-ico">${icon(n[2], "s20")}</span><b>${n[0]}</b><span>${n[1]}</span></div>${i < nodes.length - 1 ? `<div class="pedge" style="--k:${i}"><i></i></div>` : ""}`).join("")}</div>
+        <div class="pipe-svg">${nodes.map((n, i) => `<div class="pnode" style="--k:${i}"><span class="pn-ico">${icon(n[2], "s20")}</span><b>${n[0]}</b><span>${n[1]}</span></div>${i < nodes.length - 1 ? `<div class="pedge" style="--k:${i}"><b><i></i></b></div>` : ""}`).join("")}</div>
       </section>
       <div class="feed-stats" data-reveal><span>Сегодня</span><b id="fsTotal">${feedStats.total}</b><span>заключений</span><b id="fsPath">${feedStats.path}</b><span>с находками</span><b id="fsRoute">${feedStats.route}</b><span>маршрутов предложено</span><span class="demo-mark"><i></i>демо-поток</span></div>
       <div class="feed" id="feed">${first.map(f => feedItem(f)).join("")}</div>`,

@@ -31,7 +31,8 @@
 .nav.on svg.i { color: var(--teal-ink); }
 .nav-glider { position: absolute; z-index: 0; left: 0; right: 0; top: 0; height: 40px; opacity: 0; border-radius: 8px; background: var(--surface); border: 1px solid var(--teal-line); box-shadow: var(--shadow-lit); transition: transform .5s var(--ease), height .5s var(--ease), opacity .3s var(--ease); }
 .nav .count { margin-left: auto; min-width: 22px; height: 20px; padding: 0 6px; border-radius: 6px; display: grid; place-items: center; background: var(--teal-wash); color: var(--teal-ink); font-size: 12px; font-weight: 650; }
-.live-pip { margin-left: auto; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: livePulse 1.8s ease-out infinite; }
+.live-pip { position: relative; margin-left: auto; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+.live-pip::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--teal); animation: ping 1.8s ease-out infinite; }
 .side-foot { margin-top: auto; display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid var(--line); }
 .me { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0 2px; }
 .me-t { display: grid; min-width: 0; }
@@ -57,7 +58,7 @@
 .main { grid-column: 2; grid-row: 1; min-width: 0; display: flex; flex-direction: column; }
 .bar {
   position: sticky; top: 0; z-index: 30; height: var(--bar); display: flex; align-items: center; gap: 16px; padding: 0 28px;
-  background: color-mix(in srgb, var(--bg) 80%, transparent); -webkit-backdrop-filter: blur(14px) saturate(1.25); backdrop-filter: blur(14px) saturate(1.25);
+  background: color-mix(in srgb, var(--bg) 95%, transparent);
   border-bottom: 1px solid transparent; transition: border-color .3s var(--ease);
 }
 .bar.scrolled { border-bottom-color: var(--line); }
@@ -80,11 +81,11 @@
 .view { min-width: 0; padding: 4px 28px 80px; }
 .view.leaving { animation: viewOut .15s var(--ease) forwards; }
 .view.entering > :not([data-reveal]) { animation: rise .5s var(--ease) both; animation-delay: calc(var(--i, 0) * 45ms); }
-.js [data-reveal]:not(.in) { opacity: 0; transform: translateY(12px); }
-[data-reveal] { transition: opacity .6s var(--ease), transform .6s var(--ease); }
-@keyframes viewOut { to { opacity: 0; transform: translateY(-4px); filter: blur(2px); } }
+.js [data-reveal]:not(.in) { opacity: 0; transform: translateY(8px); }
+[data-reveal] { transition: opacity .5s var(--ease), transform .5s var(--ease); }
+@keyframes viewOut { to { opacity: 0; transform: translateY(-4px); } }
 .w { display: inline-block; opacity: 0; animation: wordIn .5s var(--ease) forwards; animation-delay: var(--d); }
-@keyframes wordIn { from { opacity: 0; transform: translateY(4px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes wordIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 @keyframes livePulse { 0% { box-shadow: 0 0 0 0 var(--glow); } 100% { box-shadow: 0 0 0 8px transparent; } }
 
 /* ── правая панель ── */
@@ -167,7 +168,7 @@ html.locked { overflow: hidden; }
   .tabbar {
     display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
     height: calc(62px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
-    background: color-mix(in srgb, var(--surface) 86%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+    background: color-mix(in srgb, var(--surface) 97%, transparent); border-top: 1px solid var(--line);
   }
   .tab { position: relative; display: grid; justify-items: center; align-content: center; gap: 3px; font-size: 11px; color: var(--ink-3); text-decoration: none !important; }
   .tab.on { color: var(--teal-ink); }

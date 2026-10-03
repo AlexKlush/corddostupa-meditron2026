@@ -104,7 +104,7 @@
   /* ── появление при прокрутке ── */
   const io = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
     entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-  }, { rootMargin: "0px 0px -6% 0px", threshold: .05 }) : null;
+  }, { rootMargin: "0px 0px 6% 0px", threshold: 0 }) : null; // проявляем чуть до входа в кадр, без пустоты внизу экрана
   function reveal(root = document) { $$("[data-reveal]:not(.in)", root).forEach(el => io ? io.observe(el) : el.classList.add("in")); }
 
   /* ── плавная прокрутка ── */
@@ -112,7 +112,7 @@
   function initScroll() {
     if (lenis || !window.Lenis || reduced()) return;
     try {
-      lenis = new window.Lenis({ lerp: .11, smoothWheel: true, wheelMultiplier: .95 });
+      lenis = new window.Lenis({ lerp: .13, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1 });
       const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
       requestAnimationFrame(raf);
       lenis.on("scroll", () => window.Leaders && window.Leaders.redraw());

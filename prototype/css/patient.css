@@ -16,10 +16,10 @@
 .verified { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink-2); }
 .verified .lf { margin-top: 7px; }
 .quick { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; }
-.qslot { position: relative; top: 0; display: grid; gap: 2px; min-width: 176px; padding: 10px 14px; text-align: left; border-radius: 9px; border: 1px solid var(--line-2); background: var(--surface); transition: border-color .2s var(--ease), box-shadow .3s var(--ease), top .25s var(--ease); }
+.qslot { position: relative; display: grid; gap: 2px; min-width: 176px; padding: 10px 14px; text-align: left; border-radius: 9px; border: 1px solid var(--line-2); background: var(--surface); transition: border-color .2s var(--ease), box-shadow .3s var(--ease), transform .25s var(--ease); }
 .qslot b { font-size: 14.5px; }
 .qslot span { font-size: 12.5px; color: var(--ink-3); }
-.qslot:hover { top: -2px; border-color: var(--teal); box-shadow: 0 10px 20px -14px var(--glow); }
+.qslot:hover { transform: translateY(-2px); border-color: var(--teal); box-shadow: 0 10px 20px -14px var(--glow); }
 .qslot.first { border-color: var(--teal); background: var(--teal-wash); }
 .qslot.first span { color: var(--teal-ink); }
 .next .stamp { top: 22px; right: 24px; }
@@ -76,7 +76,8 @@
 .rt-rail { position: relative; display: flex; justify-content: center; }
 .rt-dot { position: relative; z-index: 1; width: 36px; height: 36px; margin-top: 14px; display: grid; place-items: center; border-radius: 10px; background: var(--surface); border: 1px solid var(--line-2); color: var(--ink-2); }
 .rt.done .rt-dot, .rt.booked .rt-dot { background: var(--ink); border-color: var(--ink); color: var(--surface); }
-.rt.next .rt-dot { background: var(--teal); border-color: transparent; color: var(--on-teal); animation: dotGlow 2.6s var(--ease-io) infinite; }
+.rt.next .rt-dot { background: var(--teal); border-color: transparent; color: var(--on-teal); box-shadow: 0 6px 16px -8px var(--glow); }
+.rt.next .rt-dot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 10px 28px -6px var(--glow); opacity: 0; animation: halo 2.6s var(--ease-io) infinite; pointer-events: none; }
 .rt.future .rt-dot { border-style: dashed; }
 .rt-seg { position: absolute; left: calc(50% - 4px); top: 52px; width: 8px; height: calc(100% - 44px); }
 .rt-plate { margin-bottom: 18px; padding: 16px 18px; }
@@ -96,7 +97,6 @@
 .more dl div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; font-size: 13.5px; }
 .more dt { color: var(--ink-3); }
 .more dd { margin: 0; }
-@keyframes dotGlow { 0%, 100% { box-shadow: 0 6px 16px -8px var(--glow); } 50% { box-shadow: 0 10px 28px -6px var(--glow); } }
 .plan-side { position: sticky; top: calc(var(--bar) + 16px); display: grid; gap: 18px; }
 .plan-side .photo-plate, .vis-grid .photo-plate { grid-template-columns: minmax(0, 1fr); }
 #explSeg, #resSeg { margin-bottom: 14px; }
@@ -120,8 +120,8 @@
 .bk-body h3 { margin-bottom: 14px; font-size: 17px; }
 .bk-body .pick-row.lit { margin-bottom: 10px; border-color: var(--teal-line); }
 .docs { display: grid; gap: 10px; }
-.doc { position: relative; top: 0; display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px; text-align: left; cursor: pointer; transition: border-color .2s var(--ease), top .25s var(--ease), box-shadow .3s var(--ease); }
-.doc:hover { top: -2px; border-color: var(--teal-line); }
+.doc { position: relative; display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px; text-align: left; cursor: pointer; transition: border-color .2s var(--ease), transform .25s var(--ease), box-shadow .3s var(--ease); }
+.doc:hover { transform: translateY(-2px); border-color: var(--teal-line); }
 .doc b { display: block; font-size: 14.5px; }
 .doc small { display: block; font-size: 12.5px; color: var(--ink-2); }
 .doc em { display: block; margin-top: 3px; font-size: 12.5px; font-style: normal; color: var(--teal-ink); }

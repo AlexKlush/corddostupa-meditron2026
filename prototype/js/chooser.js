@@ -30,6 +30,7 @@
             <span class="film photo"><img src="${D.scenes.clinicRole}" alt="" decoding="async"><span class="corner tl">КЛИНИКА<br>координатор · врач</span><span class="corner tr">СТОЛ<br>светятся: ${lit}</span><span class="corner bl">КТ · ММГ · РГ</span></span>
             <span class="ch-np"><span class="np-name">Кабинет клиники</span><span class="np-meta"><span>Ольга Белова, координатор</span><span>Ирина Павловна, врач</span></span><span class="np-status">${UI.lf("urgent")}${urgent} ${U.plural(urgent, ["срочный случай", "срочных случая", "срочных случаев"])} без записи</span></span>
             <span class="ch-go">Войти в клинику ${icon("arrow-right", "s16")}</span>
+            <span class="halo" aria-hidden="true"></span>
           </button>
         </div>
         <p class="ch-hint">${icon("route", "s16")}<span>Сквозной сценарий: запишите Соколову Г. П. в кабинете клиники, затем откройте кабинет пациента — новый шаг уже будет там.</span></p>

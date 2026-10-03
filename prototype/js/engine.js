@@ -49,7 +49,7 @@
     if (cy < 4 || cy > window.innerHeight - 4) return false;
     const clip = el.closest("[data-clip]");
     if (clip) { const c = clip.getBoundingClientRect(); if (cy < c.top || cy > c.bottom) return false; }
-    return getComputedStyle(el).visibility !== "hidden";
+    return true;
   }
 
   function draw() {

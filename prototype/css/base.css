@@ -101,15 +101,18 @@ body {
   color: var(--ink);
   background-color: var(--bg);
   /* две лампы за молочным стеклом */
-  background-image:
-    radial-gradient(1100px 620px at 26% -8%, var(--bg-hi), transparent 62%),
-    radial-gradient(900px 700px at 88% 6%, var(--bg-hi), transparent 58%);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-variant-numeric: tabular-nums;
   transition: background-color .5s var(--ease), color .5s var(--ease);
 }
+/* две лампы за молочным стеклом: свой слой, при прокрутке не перерисовывается */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(1100px 620px at 26% -8%, var(--bg-hi), transparent 62%), radial-gradient(900px 700px at 88% 6%, var(--bg-hi), transparent 58%);
+  transform: translateZ(0);
+}
+html { overscroll-behavior-y: contain; }
 h1, h2, h3, h4, p { margin: 0; }
 h1, h2, h3 { font-weight: 650; letter-spacing: -.012em; text-wrap: balance; }
 a { color: var(--teal-ink); text-decoration: none; text-underline-offset: 3px; }
@@ -242,7 +245,9 @@ textarea.area:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--tea
 }
 .plate.pad { padding: 18px 20px; }
 .plate.lit { border-color: var(--teal-line); box-shadow: var(--shadow-lit), inset 0 1px 0 rgba(255, 255, 255, .7); }
-.plate.lit.urgent { border-color: color-mix(in srgb, var(--coral) 45%, transparent); animation: breathe 2.8s var(--ease-io) infinite; }
+.plate.lit.urgent { border-color: color-mix(in srgb, var(--coral) 45%, transparent); box-shadow: 0 1px 2px rgba(16, 32, 42, .04), 0 16px 34px -14px var(--coral-glow), 0 5px 14px -8px var(--coral-wash); }
+.halo { position: absolute; inset: -1px; z-index: 0; border-radius: inherit; pointer-events: none; opacity: 0; box-shadow: 0 20px 44px -12px var(--coral-glow), 0 6px 22px -6px var(--coral-glow); transition: opacity .5s var(--ease); }
+.plate.lit.urgent > .halo { animation: halo 2.8s var(--ease-io) infinite; will-change: opacity; }
 .plate.off { background: var(--off); box-shadow: none; border-color: var(--line); }
 .plate.off .film svg, .plate.off .film img { opacity: .5; filter: grayscale(.4); }
 .plate.off .np-name { color: var(--ink-2); }
@@ -278,7 +283,8 @@ textarea.area:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--tea
 
 /* ── кадр снимка (плёнка) ────────────────────────────────── */
 .film { position: relative; overflow: hidden; border-radius: 8px; background: var(--film); color: var(--film-ink); }
-.film > svg.study, .film > img { display: block; width: 100%; height: 100%; }
+.film > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.film > svg.marks { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
 .film .corner { position: absolute; font: 400 10.5px/1.35 var(--mono); color: var(--film-ink); letter-spacing: 0; pointer-events: none; text-shadow: 0 1px 1px rgba(0, 0, 0, .6); }
 .film.photo::before, .film.photo::after { content: ""; position: absolute; left: 0; right: 0; height: 30%; z-index: 1; pointer-events: none; }
 .film.photo::before { top: 0; background: linear-gradient(180deg, rgba(4, 10, 12, .55), transparent); }
@@ -425,7 +431,8 @@ abbr[data-tip], .gl { text-decoration: underline dotted var(--line-3); text-unde
 @keyframes fade { from { opacity: 0; } }
 @keyframes hang { 0% { opacity: 0; transform: translateY(-10px) rotate(-.6deg); } 60% { opacity: 1; } 100% { opacity: 1; transform: none; } }
 @keyframes ripple { to { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
-@keyframes breathe { 0%, 100% { box-shadow: 0 1px 2px rgba(16, 32, 42, .04), 0 16px 34px -14px var(--coral-glow), 0 5px 14px -8px var(--coral-wash); } 50% { box-shadow: 0 1px 2px rgba(16, 32, 42, .04), 0 18px 40px -12px var(--coral-glow), 0 6px 20px -6px var(--coral-glow); } }
+@keyframes halo { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+@keyframes ping { from { transform: scale(1); opacity: .55; } to { transform: scale(2.8); opacity: 0; } }
 @keyframes march { to { stroke-dashoffset: -18; } }
 @keyframes markIn { from { opacity: 0; transform: scale(1.6); } to { opacity: 1; transform: none; } }
 @keyframes stampIn { 0% { opacity: 0; transform: rotate(-14deg) scale(1.9); filter: blur(3px); } 60% { opacity: 1; transform: rotate(-5deg) scale(.94); filter: blur(0); } 100% { opacity: 1; transform: rotate(-6deg) scale(1); } }
@@ -437,7 +444,7 @@ abbr[data-tip], .gl { text-decoration: underline dotted var(--line-3); text-unde
 @keyframes popIn { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
 @keyframes popOut { to { opacity: 0; transform: translateY(-4px) scale(.98); } }
 @keyframes pipPop { 0% { transform: scale(0); } 70% { transform: scale(1.35); } 100% { transform: scale(1); } }
-@keyframes swapIn { from { opacity: 0; transform: translateY(6px); filter: blur(2px); } }
+@keyframes swapIn { from { opacity: 0; transform: translateY(6px); } }
 @keyframes lightOn { 0% { opacity: 0; } 8% { opacity: .9; } 11% { opacity: .15; } 19% { opacity: 1; } 23% { opacity: .35; } 36% { opacity: 1; } 100% { opacity: 1; } }
 @keyframes flash { 0% { box-shadow: 0 0 0 0 var(--glow); } 100% { box-shadow: 0 0 0 14px transparent; } }
 
@@ -447,7 +454,7 @@ abbr[data-tip], .gl { text-decoration: underline dotted var(--line-3); text-unde
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; animation-delay: 0ms !important; transition-duration: .12s !important; scroll-behavior: auto !important; }
-  .plate.lit.urgent { animation: none; }
+  .halo { animation: none !important; opacity: .7; }
   .leaders path.proposed { animation: none; }
 }
 

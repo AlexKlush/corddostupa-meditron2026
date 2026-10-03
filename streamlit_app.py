@@ -46,6 +46,8 @@ st.markdown(
       header[data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"],
       [data-testid="stStatusWidget"], #MainMenu, footer { display: none !important; }
       .stApp { background: #F7FAFA; }
+      /* прокручивается только сам прототип внутри iframe: внешняя страница не должна перехватывать колесо */
+      html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] { overflow: hidden !important; height: 100vh; }
       [data-testid="stMain"], [data-testid="stAppViewContainer"] { padding: 0 !important; }
       [data-testid="stMainBlockContainer"], .block-container { padding: 0 !important; max-width: 100% !important; }
       [data-testid="stVerticalBlock"] { gap: 0 !important; }
