@@ -10,6 +10,14 @@
 - Продуктовый контекст для дизайна (пользователи, принципы, ограничения): `PRODUCT.md`.
 - Текущий этап: кликабельный прототип интерфейсов на демо-данных (вымышленная клиника «Эгида»). Связь, шифрование, серверы пока не делаем (решение пользователя, см. `docs/decisions.md`).
 
+### Как запустить прототип
+
+- **Статическая версия:** `python3 scripts/serve.py` → http://localhost:8795. Это свой мини-сервер без кэша: обычный `python3 -m http.server` держит очередь всего из 5 соединений и рвёт параллельную загрузку файлов (страница тогда остаётся пустой).
+- **Streamlit:** один раз `python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt`, затем `.venv/bin/streamlit run streamlit_app.py --server.port 8502` → http://localhost:8502. `streamlit_app.py` склеивает `prototype/` в одну страницу и показывает её на весь экран.
+- **Публичная ссылка:** `cloudflared tunnel --url http://127.0.0.1:8502` печатает адрес `*.trycloudflare.com`. Ссылка живёт, пока на этом Mac работают Streamlit и cloudflared; после перезапуска адрес новый. Постоянный вариант: Streamlit Community Cloud (share.streamlit.io → New app → этот репозиторий, ветка `main`, файл `streamlit_app.py`), нужен вход владельца репозитория.
+- **Структура:** `prototype/index.html`, `prototype/css/` (base, chooser, cabinet, admin, patient), `prototype/js/` (data — демо-данные, store — общее состояние двух кабинетов, admin/patient — кабинеты, engine — выноски, art — снимки и логотип), `prototype/vendor/lenis.min.js` (плавная прокрутка, MIT). Иконки — подмножество Lucide: дописать имя в `scripts/icons.txt` и пересобрать `scripts/gen_icons.js`.
+- Дизайн-контекст: `PRODUCT.md` и контракт направления «Негатоскоп» в `.impeccable/surfaces/prototype-index-html.md`.
+
 ## Как мы работаем
 
 Репозиторий: https://github.com/AlexKlush/corddostupa-meditron2026
