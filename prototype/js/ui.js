@@ -68,7 +68,7 @@
       ${probMeter(ai.prob)}
       <h4>Описание</h4><dl class="sr-desc">${rows}</dl>
       <h4>Заключение</h4><p class="sr-concl">${esc(ai.conclusion)}</p>
-      <ul class="sr-warn">${D.WARN.map(w => `<li>${icon("info", "s14")}${esc(w)}</li>`).join("")}</ul>
+      <ul class="sr-warn">${D.WARN.map(w => `<li>${icon("info", "s14")}<span>${esc(w)}</span></li>`).join("")}</ul>
       ${conf && !opts.noConfirm ? `<p class="sr-human">${lf("confirmed")}<span>Находку подтвердил рентгенолог: ${esc(Store.doc("d9").short)}, ${fmt.rel(-conf[1])}</span></p>` : ""}
     </div>`;
   }

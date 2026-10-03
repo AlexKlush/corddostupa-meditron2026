@@ -95,6 +95,7 @@
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 html, body { margin: 0; min-height: 100%; }
+html, body { overflow-x: clip; } /* невидимые подсказки у края не раздвигают страницу */
 body {
   font: 400 15px/1.5 var(--font);
   color: var(--ink);
@@ -295,7 +296,7 @@ textarea.area:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--tea
 .mk-ring.doc { stroke: #F2F6F7; stroke-dasharray: none; }
 .mk-tag rect { fill: rgba(4, 30, 30, .78); stroke: var(--teal-hi); stroke-width: .8; vector-effect: non-scaling-stroke; }
 .mk-tag text { fill: #DFFBFA; font: 500 9px var(--mono); }
-.film.live .mk-ring { animation: march 1.4s linear infinite; }
+.film.ants .mk-ring { animation: march 1.4s linear infinite; }
 .film.reveal .mk { animation: markIn .7s var(--ease) both .2s; transform-box: fill-box; transform-origin: center; }
 
 /* ── форма линии как состояние ───────────────────────────── */

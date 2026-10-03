@@ -242,7 +242,7 @@
             <div class="cv-acts">${UI.pri(p)}<button class="btn" data-act="call" data-id="${p.id}">${icon("phone", "s16")}<span>Позвонить</span></button><button class="btn ghost icon" data-act="push" data-id="${p.id}" data-tip="Отправить рекомендацию в приложение">${icon("send", "s16")}</button></div>
           </header>
 
-          <div class="cv-film plate">${UI.film(p, "lg", "live reveal")}</div>
+          <div class="cv-film plate">${UI.film(p, "lg", "ants reveal")}</div>
 
           <nav class="seg cv-tabs" id="cvTabs">${[["sr", "Заключение ИИ"], ["route", "Маршрут пациента"], ["acts", "Последние действия"], ["comm", "Комментарии врачей"], ["kafka", "Kafka"]].map(([k, l], i) => `<button class="${i ? "" : "on"}" data-act="cv-sec" data-sec="${k}">${l}</button>`).join("")}</nav>
 
@@ -459,8 +459,8 @@
   window.Admin = {
     home: "wall",
     nav: () => [
-      { view: "wall", label: "Световой стол", icon: "layout-grid", count: () => Store.all().filter(p => p.lit).length },
-      { view: "inbox", label: "Поток заключений", icon: "radio", count: () => null, live: true },
+      { view: "wall", label: "Световой стол", short: "Стол", icon: "layout-grid", count: () => Store.all().filter(p => p.lit).length },
+      { view: "inbox", label: "Поток заключений", short: "Поток", icon: "radio", count: () => null, live: true },
       { view: "schedule", label: "Расписание", icon: "calendar-days" },
       { view: "analytics", label: "Аналитика", icon: "chart-column" },
     ],

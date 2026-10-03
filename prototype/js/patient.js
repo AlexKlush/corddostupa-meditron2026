@@ -61,7 +61,7 @@
         <p>${bk ? `Следующий шаг назначен: консультация пульмонолога, ${fmt.wdLong(bk.off)} в ${bk.t}.` : "В вашем плане светится один шаг: консультация пульмонолога. Записаться можно прямо здесь, это займёт минуту."}</p>
       </section>
       <section class="plate next ${bk ? "off" : "lit"}" id="nextPlate">
-        <div class="next-film">${UI.film(p, "md", "live reveal")}</div>
+        <div class="next-film">${UI.film(p, "md", "ants reveal")}</div>
         <div class="next-body">
           <h2>Консультация пульмонолога</h2>
           <p class="next-when muted">${bk ? "Вы записаны" : "Рекомендуем в ближайшие 2 недели"} · по ОМС, бесплатно</p>
@@ -253,7 +253,7 @@
       </tbody></table>${l.note ? `<p class="lab-note">${icon("sparkles", "s14")}${esc(l.note)}</p>` : ""}</section>`).join("");
     const chol = P.cholesterol;
     const study = `<section class="plate pad res-study" data-reveal><h3>${icon("scan-line", "s16")}${esc(p.study.title)}<span class="muted push">${fmt.long(-p.study.ago)}</span></h3>
-      <div class="rs-grid">${UI.film(p, "lg", "live reveal")}<div>
+      <div class="rs-grid">${UI.film(p, "lg", "ants reveal")}<div>
         <div class="seg sm" id="resSeg"><button class="${rv.mode === "plain" ? "on" : ""}" data-act="r-mode" data-m="plain">Простыми словами</button><button class="${rv.mode === "med" ? "on" : ""}" data-act="r-mode" data-m="med">Заключение</button></div>
         <div id="resBox">${resText(p)}</div>
         <div class="row wrap"><button class="btn sm" data-act="r-pdf">${icon("file-down", "s14")}<span>Скачать PDF</span></button><button class="btn sm ghost" data-act="nav" data-view="plan">Что дальше ${icon("arrow-right", "s14")}</button></div>
@@ -326,7 +326,7 @@
     home: "home",
     nav: () => [
       { view: "home", label: "Главная", icon: "house" },
-      { view: "plan", label: "Мой план", icon: "route", count: () => me().booking ? null : 1 },
+      { view: "plan", label: "Мой план", short: "План", icon: "route", count: () => me().booking ? null : 1 },
       { view: "visits", label: "Визиты", icon: "calendar" },
       { view: "results", label: "Результаты", icon: "file-text" },
       { view: "health", label: "Показатели", icon: "heart-pulse" },

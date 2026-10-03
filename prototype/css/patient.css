@@ -144,7 +144,8 @@
 .done-box p { max-width: 40ch; }
 
 /* ── результаты ── */
-.res-list { display: grid; gap: 18px; }
+.res-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.res-list > * { min-width: 0; overflow-x: auto; }
 .rs-grid { display: grid; grid-template-columns: minmax(260px, 440px) minmax(0, 1fr); gap: 22px; align-items: start; }
 .rs-grid .film.lg { aspect-ratio: 4 / 3; }
 .rs-grid > div:last-child { display: grid; gap: 12px; align-content: start; }

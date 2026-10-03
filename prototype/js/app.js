@@ -56,7 +56,7 @@
         ${isAdmin
           ? `<div class="seg role-seg" id="roleSeg" aria-label="Роль"><button class="${role === "coordinator" ? "on" : ""}" data-act="role" data-r="coordinator">${icon("phone-call", "s14")}<span>Координатор</span></button><button class="${role === "doctor" ? "on" : ""}" data-act="role" data-r="doctor">${icon("stethoscope", "s14")}<span>Врач</span></button></div>`
           : `<button class="btn primary side-cta" data-act="p-book" data-sk="pulm">${icon("calendar-plus", "s16")}<span>Записаться</span></button>`}
-        <nav class="side-nav" id="sideNav"><span class="nav-glider" aria-hidden="true"></span>${cab.nav().map(n => `<a class="nav" href="#/${r.cab}/${n.view}" data-act="nav" data-view="${n.view}" data-tip="${esc(n.label)}">${icon(n.icon)}<span class="label">${esc(n.label)}</span>${n.live ? `<span class="live-pip" aria-label="идёт поток"></span>` : `<span class="count" data-navcount="${n.view}" hidden></span>`}</a>`).join("")}</nav>
+        <nav class="side-nav" id="sideNav"><span class="nav-glider" aria-hidden="true"></span>${cab.nav().map(n => `<a class="nav" href="#/${r.cab}/${n.view}" data-act="nav" data-view="${n.view}" title="${esc(n.label)}">${icon(n.icon)}<span class="label">${esc(n.label)}</span>${n.live ? `<span class="live-pip" aria-label="идёт поток"></span>` : `<span class="count" data-navcount="${n.view}" hidden></span>`}</a>`).join("")}</nav>
         <div class="side-foot">
           <div class="me" id="meCard"></div>
           <div class="side-tools">
@@ -82,7 +82,7 @@
       </div>
       <aside class="panel" id="panel" data-lenis-prevent aria-label="Панель записи"><div class="panel-head"><b id="panelTitle"></b><button class="ib" data-act="panel-close" aria-label="Закрыть панель">${icon("x")}</button></div><div class="panel-body" id="panelBody"></div></aside>
       <div class="scrim" data-act="panel-close" aria-hidden="true"></div>
-      <nav class="tabbar" aria-label="Разделы">${cab.nav().slice(0, 5).map(n => `<a class="tab" href="#/${r.cab}/${n.view}" data-act="nav" data-view="${n.view}">${icon(n.icon)}<span>${esc(n.label.split(" ").pop())}</span></a>`).join("")}</nav>
+      <nav class="tabbar" aria-label="Разделы">${cab.nav().slice(0, 5).map(n => `<a class="tab" href="#/${r.cab}/${n.view}" data-act="nav" data-view="${n.view}">${icon(n.icon)}<span>${esc(n.short || n.label)}</span></a>`).join("")}</nav>
     </div>`;
     U.ruler($("#ruler"));
     U.glideAll(app, true);
