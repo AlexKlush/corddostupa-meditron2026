@@ -1,0 +1,71 @@
+# ---- Секреты и локальные настройки (НИКОГДА не коммитить) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials*.json
+
+# Личные настройки Claude Code (у каждого свои)
+CLAUDE.local.md
+.claude/settings.local.json
+
+# ---- ОС ----
+.DS_Store
+.AppleDouble
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+
+# ---- Редакторы / IDE ----
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# ---- Node ----
+node_modules/
+npm-debug.log*
+.next/
+.nuxt/
+
+# ---- Данные и модели (большое и/или чувствительное: не в git) ----
+data/raw/
+data/private/
+*.safetensors
+*.gguf
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.onnx
+checkpoints/
+wandb/
+mlruns/
+
+# ---- Логи и временное ----
+*.log
+logs/
+tmp/
+.cache/
